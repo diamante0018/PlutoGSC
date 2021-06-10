@@ -75,7 +75,7 @@ gameEnded()
     gameFlagWait( "prematch_done" );
     for ( ;; )
     {
-        level waittill("game_ended", team);
+        level waittill( "game_ended", team );
         foreach( player in level.players )
         {
             player setClientDvar ( "cg_thirdperson", true );
@@ -150,7 +150,7 @@ connected()
 
 giveAmmo()
 {
-    self endon("disconnect");
+    self endon( "disconnect" );
     gameFlagWait( "prematch_done" );
     for ( ;; )
     {
