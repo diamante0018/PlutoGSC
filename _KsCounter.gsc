@@ -35,6 +35,6 @@ killstreakPlayer()
     for ( ;; )
     {
         self waittill_any( "killed_enemy", "spawned_player" ); 
-	    KsCounter setValue( self getPlayerData( "killstreaksState", "count" ) );
+        KsCounter setValue( self getPlayerData( "killstreaksState", "count" ) );
     }
 }
