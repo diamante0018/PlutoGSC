@@ -124,6 +124,7 @@ windsock_large()
     bounds_1 PhysicsLaunchServer( (0,0,0), (-400, -250, 10) );
 }
 
+// Causes some errors so for now I don't use this
 destroy()
 {
     a1 = getentarray( "destructible_toy", "targetname" );
