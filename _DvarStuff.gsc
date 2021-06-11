@@ -173,13 +173,14 @@ afk()
 // Fix compiler error
 getPlayerFromClientNum( clientNum )
 {
-	if ( clientNum < 0 )
-		return undefined;
-	
-	for ( i = 0; i < level.players.size; i++ )
-	{
-		if ( level.players[i] getEntityNumber() == clientNum )
-			return level.players[i];
-	}
-	return undefined;
+    if ( clientNum < 0 ) return undefined;
+
+    for ( i = 0; i < level.players.size; i++ )
+    {
+        if ( level.players[i] getEntityNumber() == clientNum ) 
+        {
+            return level.players[i];
+        }
+    }
+    return undefined;
 }
