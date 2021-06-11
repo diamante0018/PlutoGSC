@@ -179,9 +179,9 @@ nukeDeath()
         ents_to_blowup = array_combine( ents_to_blowup, getentarray( "destructible_vehicle", "targetname" ) );
         ents_to_blowup = array_combine( ents_to_blowup, getentarray( "explodable_barrel", "targetname" ) );
         for (i = 0; i < ents_to_blowup.size; i++)
-		{
+        {
             ents_to_blowup[i] thread maps\mp\_destructables::destructable_destruct();
-		}
+        }
         level notify( "game_cleanup" );
         print( "Destroyed a lot of stuff" );
     }
