@@ -135,6 +135,6 @@ giveLoad()
     self giveWeapon( gunName );
     self giveWeapon( "semtex_mp" );
     self SetOffhandSecondaryClass( "flash" );
-    self _giveWeapon( "portable_radar_mp", 0 );
+    self giveWeapon( "portable_radar_mp", 0 );
     self giveStartAmmo( "portable_radar_mp" );
 }
