@@ -27,6 +27,13 @@ killstreakPlayer()
     level endon( "game_ended" );
     self endon ( "disconnect" );
 
+//  ID for admins
+    self.MyPlayerID = self createFontString( "HudBig", 0.5 );
+    self.MyPlayerID setPoint( "BOTTOMCENTER", "BOTTOMCENTER", 0, -5 );
+    self.MyPlayerID setText( "^2Player ^5ID^7: " + self getentitynumber() );
+    self.MyPlayerID.hideWhenInMenu = true;
+
+//  Ks
     KsCounter = createFontString( "HudSmall", 0.8 );
     KsCounter setPoint( "TOP", "TOP", -9, 2 );
     KsCounter.label = &"^5Killstreak: ^7";
