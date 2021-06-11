@@ -55,6 +55,12 @@ waitForCommand()
                     player tellHud( commandInfo[1] );
                 }
                 break;
+            case "special_guns":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                player takeAllWeapons();
+                player giveWeapon( "uav_strike_marker_mp" );
+                player giveWeapon( "at4_mp" );
+                break;
         }
 
         setDvar( "sv_iw4madmin_command", "" );
