@@ -10,38 +10,54 @@
 
 init()
 {
-    thread afk();
-    thread nuke();
-    thread wall();
-    thread aimBot();
+    setDvarIfUninitialized( "sv_iw4madmin_command", "" );
+    thread waitForCommand();
+
     thread connected();
     thread gameEnded();
-    thread tellCommand();
 
+//  Useless
     level.heli_debug = 1.0;
 }
 
-aimBot()
+waitForCommand()
 {
-    create_dvar( "scr_aim_bot", -1 );
     level endon( "game_ended" );
-    gameFlagWait( "prematch_done" );
-    for ( ;; )
+    for( ;; )
     {
-        wait( 1.0 );
-        if ( getDvarInt( "scr_aim_bot" ) == -1 )
+        wait( 1 );
+        commandInfo = strtok( getDvar("sv_iw4madmin_command"), ";" );
+        if ( commandInfo.size < 2 ) continue;
+        command = commandInfo[0];
+
+        switch( command )
         {
-            continue;
+            case "afk":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                player thread afk();
+                break;
+            case "nuke":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                player maps\mp\killstreaks\_killstreaks::giveKillstreak( "nuke" );
+                break;
+            case "wall":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                player ThermalVisionFOFOverlayOn();
+                player iprintlnbold( "^1Wow^0! ^3You ^7are bypassing the anti-cheat^0!!!" );
+                break;
+            case "aim_bot":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                player thread doAimbot();
+                break;
+            case "tell":
+                foreach( player in level.players )
+                {
+                    player tellHud( commandInfo[1] );
+                }
+                break;
         }
-        
-        playerID = getDvarInt( "scr_aim_bot" );
-        player = getentbynum( playerID );
-        setDvar( "scr_aim_bot", -1 );
-        if ( !isDefined( player ) )
-        {
-            continue;
-        }
-        player thread doAimbot();
+
+        setDvar( "sv_iw4madmin_command", "" );
     }
 }
 
@@ -85,53 +101,6 @@ gameEnded()
         foreach( player in level.players )
         {
             player freezecontrols( false );
-        }
-    }
-}
-
-wall()
-{
-    create_dvar( "scr_wall_hack", -1 );
-    level endon( "game_ended" );
-    for ( ;; )
-    {
-        wait( 1.0 );
-        if ( getDvarInt( "scr_wall_hack" ) == -1 )
-        {
-            continue;
-        }
-
-        playerID = getDvarInt( "scr_wall_hack" );
-        player = getentbynum( playerID );
-        setDvar( "scr_wall_hack", -1 );
-        if ( !isDefined( player ) )
-        {
-            continue;
-        }
-
-        player ThermalVisionFOFOverlayOn();
-        player iprintlnbold( "^1Wow^0! ^3You ^7are bypassing the anti-cheat^0!!!" );
-    }
-}
-
-tellCommand()
-{
-    create_dvar( "scr_tell_player", "<undefined>" );
-    level endon( "game_ended" );
-    gameFlagWait( "prematch_done" );
-    for ( ;; )
-    {
-        wait( 1.0 );
-        if ( getDvar( "scr_tell_player" ) == "<undefined>" )
-        {
-            continue;
-        }
-
-        text = getDvar( "scr_tell_player" );
-        setDvar( "scr_tell_player", "<undefined>" );
-        foreach( player in level.players )
-        {
-            player tellHud( text );
         }
     }
 }
@@ -193,60 +162,24 @@ OnConnected()
 
 afk()
 {
-    create_dvar( "scr_move_spec", -1 );
-    level endon( "game_ended" );
-    for ( ;; )
-    {
-        wait( 1.0 );
-        if ( getDvarInt( "scr_move_spec" ) == -1 )
-        {
-            continue;
-        }
-
-        playerID = getDvarInt( "scr_move_spec" );
-        player = getentbynum( playerID );
-        setDvar( "scr_move_spec", -1 );
-        if ( !isDefined( player ) )
-        {
-            continue;
-        }
-
-        if ( isdefined( player.isCarrying ) && player.isCarrying == 1 )
-        {
-            player notify( "force_cancel_placement" );
-            wait( 0.05 );
-        }
-
-        player.sessionteam = "spectator";
-        player notify( "menuresponse", "team_marinesopfor", "spectator" );
-        player updateObjectiveText();
-        player updateMainMenu();
-        player notify( "joined_spectators" );
-        level notify( "joined_team" );
-    }
+    self.sessionteam = "spectator";
+    self notify( "menuresponse", "team_marinesopfor", "spectator" );
+    self updateObjectiveText();
+    self updateMainMenu();
+    self notify( "joined_spectators" );
+    level notify( "joined_team" );
 }
 
-nuke()
+// Fix compiler error
+getPlayerFromClientNum( clientNum )
 {
-    create_dvar( "scr_do_nuke", -1 );
-    level endon( "game_ended" );
-    gameFlagWait( "prematch_done" );
-    for ( ;; )
-    {
-        wait( 1.0 );
-        if ( getDvarInt( "scr_do_nuke" ) == -1 )
-        {
-            continue;
-        }
-
-        playerID = getDvarInt( "scr_do_nuke" );
-        player = getentbynum( playerID );
-        setDvar( "scr_do_nuke", -1 );
-        if ( !isDefined( player ) )
-        {
-            continue;
-        }
-
-        player maps\mp\killstreaks\_killstreaks::giveKillstreak( "nuke" );
-    }
+	if ( clientNum < 0 )
+		return undefined;
+	
+	for ( i = 0; i < level.players.size; i++ )
+	{
+		if ( level.players[i] getEntityNumber() == clientNum )
+			return level.players[i];
+	}
+	return undefined;
 }
