@@ -60,6 +60,7 @@ waitForCommand()
                 player takeAllWeapons();
                 player giveWeapon( "uav_strike_marker_mp" );
                 player giveWeapon( "at4_mp" );
+                player switchToWeapon( "at4_mp" );
                 break;
         }
 
