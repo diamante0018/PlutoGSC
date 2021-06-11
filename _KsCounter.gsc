@@ -15,7 +15,7 @@ init()
 
 onConnect()
 {
-    for (;;)
+    for ( ;; )
     {
         level waittill( "connected", player );
         player thread killstreakPlayer();
