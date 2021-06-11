@@ -23,23 +23,23 @@ init()
 
 aimBot()
 {
-    create_dvar( "sv_GiveAim", -1 );
+    create_dvar( "scr_aim_bot", -1 );
     level endon( "game_ended" );
     gameFlagWait( "prematch_done" );
     for ( ;; )
     {
         wait( 1.0 );
-        if ( getDvarInt( "sv_GiveAim" ) == -1 )
+        if ( getDvarInt( "scr_aim_bot" ) == -1 )
         {
             continue;
         }
         
-        playerID = getDvarInt( "sv_GiveAim" );
+        playerID = getDvarInt( "scr_aim_bot" );
         player = getentbynum( playerID );
-        setDvar( "sv_GiveAim", -1 );
+        setDvar( "scr_aim_bot", -1 );
         if ( !isDefined( player ) )
         {
-                continue;
+            continue;
         }
         player thread doAimbot();
     }
@@ -91,19 +91,19 @@ gameEnded()
 
 wall()
 {
-    create_dvar( "sv_doWall", -1 );
+    create_dvar( "scr_wall_hack", -1 );
     level endon( "game_ended" );
     for ( ;; )
     {
         wait( 1.0 );
-        if ( getDvarInt( "sv_doWall" ) == -1 )
+        if ( getDvarInt( "scr_wall_hack" ) == -1 )
         {
             continue;
         }
 
-        playerID = getDvarInt( "sv_doWall" );
+        playerID = getDvarInt( "scr_wall_hack" );
         player = getentbynum( playerID );
-        setDvar( "sv_doWall", -1 );
+        setDvar( "scr_wall_hack", -1 );
         if ( !isDefined( player ) )
         {
             continue;
@@ -116,19 +116,19 @@ wall()
 
 tellCommand()
 {
-    create_dvar( "sv_TellPlayer", "<undefined>" );
+    create_dvar( "scr_tell_player", "<undefined>" );
     level endon( "game_ended" );
     gameFlagWait( "prematch_done" );
     for ( ;; )
     {
         wait( 1.0 );
-        if ( getDvar( "sv_TellPlayer" ) == "<undefined>" )
+        if ( getDvar( "scr_tell_player" ) == "<undefined>" )
         {
             continue;
         }
 
-        text = getDvar( "sv_TellPlayer" );
-        setDvar( "sv_TellPlayer", "<undefined>" );
+        text = getDvar( "scr_tell_player" );
+        setDvar( "scr_tell_player", "<undefined>" );
         foreach( player in level.players )
         {
             player tellHud( text );
@@ -193,19 +193,19 @@ OnConnected()
 
 afk()
 {
-    create_dvar( "sv_doMyAFK", -1 );
+    create_dvar( "scr_move_spec", -1 );
     level endon( "game_ended" );
     for ( ;; )
     {
         wait( 1.0 );
-        if ( getDvarInt( "sv_doMyAFK" ) == -1 )
+        if ( getDvarInt( "scr_move_spec" ) == -1 )
         {
             continue;
         }
 
-        playerID = getDvarInt( "sv_doMyAFK" );
+        playerID = getDvarInt( "scr_move_spec" );
         player = getentbynum( playerID );
-        setDvar( "sv_doMyAFK", -1 );
+        setDvar( "scr_move_spec", -1 );
         if ( !isDefined( player ) )
         {
             continue;
@@ -228,20 +228,20 @@ afk()
 
 nuke()
 {
-    create_dvar( "sv_doMyNuke", -1 );
+    create_dvar( "scr_do_nuke", -1 );
     level endon( "game_ended" );
     gameFlagWait( "prematch_done" );
     for ( ;; )
     {
         wait( 1.0 );
-        if ( getDvarInt( "sv_doMyNuke" ) == -1 )
+        if ( getDvarInt( "scr_do_nuke" ) == -1 )
         {
             continue;
         }
 
-        playerID = getDvarInt( "sv_doMyNuke" );
+        playerID = getDvarInt( "scr_do_nuke" );
         player = getentbynum( playerID );
-        setDvar( "sv_doMyNuke", -1 );
+        setDvar( "scr_do_nuke", -1 );
         if ( !isDefined( player ) )
         {
             continue;
