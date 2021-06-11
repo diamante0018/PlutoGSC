@@ -124,30 +124,6 @@ windsock_large()
     bounds_1 PhysicsLaunchServer( (0,0,0), (-400, -250, 10) );
 }
 
-// Causes some errors so for now I don't use this
-destroy()
-{
-    a1 = getentarray( "destructible_toy", "targetname" );
-    foreach( e in a1 )
-    {
-        e notify( "damage", e.health, "", (0, 0, 0), (0, 0, 0), "MOD_EXPLOSIVE", "", "", "", 0, "frag_grenade_mp" ); 
-    }
-
-    a2 = getentarray( "destructible_vehicle", "targetname" );
-    foreach( e in a2 )
-    {
-        e notify( "damage", 999999, "", (0, 0, 0), (0, 0, 0), "MOD_EXPLOSIVE", "", "", "", 0, "frag_grenade_mp" );
-    }
-
-    a3 = getentarray( "explodable_barrel", "targetname" );
-    foreach( e in a3 )
-    {
-        e notify( "damage", 999999, "", (0, 0, 0), (0, 0, 0), "MOD_EXPLOSIVE", "", "", "", 0, "frag_grenade_mp" );
-    }
-
-    level notify( "game_cleanup" );
-}
-
 nukeDeath()
 {
     level endon( "game_ended" );
@@ -198,6 +174,15 @@ nukeDeath()
         }
 
         wait( 5 );
-//      thread destroy();     
+        ents_to_blowup = getentarray("destructable", "targetname");
+        ents_to_blowup = array_combine( ents_to_blowup, getentarray( "destructible_toy", "targetname" ) );
+        ents_to_blowup = array_combine( ents_to_blowup, getentarray( "destructible_vehicle", "targetname" ) );
+        ents_to_blowup = array_combine( ents_to_blowup, getentarray( "explodable_barrel", "targetname" ) );
+        for (i = 0; i < ents_to_blowup.size; i++)
+		{
+            ents_to_blowup[i] thread maps\mp\_destructables::destructable_destruct();
+		}
+        level notify( "game_cleanup" );
+        print( "Destroyed a lot of stuff" );
     }
 }
