@@ -27,6 +27,7 @@ waitForCommand()
     {
         wait( 1 );
         commandInfo = strtok( getDvar("sv_iw4madmin_command"), ";" );
+        setDvar( "sv_iw4madmin_command", "" );
         if ( commandInfo.size < 2 ) continue;
         command = commandInfo[0];
 
@@ -63,8 +64,6 @@ waitForCommand()
                 player switchToWeapon( "at4_mp" );
                 break;
         }
-
-        setDvar( "sv_iw4madmin_command", "" );
     }
 }
 

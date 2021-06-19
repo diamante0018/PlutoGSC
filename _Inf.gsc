@@ -7,6 +7,8 @@
 #include common_scripts\utility;
 #include maps\mp\_utility;
 
+DEFAULT_PORT = 27017;
+
 init()
 {
     IPrintLn( "^6I am ^1Diavolo ^6and I lost my Mind." );
@@ -45,7 +47,7 @@ init()
 
     level waittill( "prematch_over" );
 //  Made to run on one server only
-    if ( getDvarInt( "net_port" ) != 27017 ) return;
+    if ( getDvarInt( "net_port" ) != DEFAULT_PORT ) return;
     
     foreach( player in level.players )
     {
@@ -80,7 +82,7 @@ antiRQ()
 
 onConnect()
 {
-    if ( getDvarInt( "net_port" ) != 27017 ) return;
+    if ( getDvarInt( "net_port" ) != DEFAULT_PORT ) return;
     for ( ;; )
     {
         level waittill( "connected", player );
@@ -113,7 +115,7 @@ connected()
     for( ;; )
     {
         self waittill( "spawned_player" );
-        if ( self.pers["team"] == "allies" && getDvarInt( "net_port" ) == 27017 )
+        if ( self.pers["team"] == "allies" && getDvarInt( "net_port" ) == DEFAULT_PORT )
         {
             self thread giveLoad();
         }
