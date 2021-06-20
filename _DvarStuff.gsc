@@ -17,11 +17,6 @@ init()
 
     thread connected();
     thread gameEnded();
-
-    level.customAirDrop = [];
-    level.customAirDrop[ level.customAirDrop.size ] = "airdrop_support";
-    level.customAirDrop[ level.customAirDrop.size ] = "airdrop_assault";
-    level.customAirDrop[ level.customAirDrop.size ] = "airdrop_mega";
 }
 
 waitForCommand()
@@ -81,8 +76,11 @@ waitForCommand()
                 break;
             case "air_drop":
                 player = getPlayerFromClientNum( int( commandInfo[1] ) );
-                custom_type = level.customAirDrop[ randomInt( level.customAirDrop.size ) ];
-                level thread maps\mp\killstreaks\_airdrop::doFlyBy( player, level.mapCenter, randomFloat( 360 ), custom_type );
+                level thread maps\mp\killstreaks\_airdrop::doMegaC130FlyBy( player, level.mapCenter, randomFloat( 360 ), "airdrop_grnd", -360 );
+                break;
+            case "airstrike":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                player maps\mp\killstreaks\_killstreaks::giveKillstreak( "precision_airstrike" );
                 break;
         }
     }
