@@ -49,5 +49,11 @@ givePerk()
         case 1:
             self maps\mp\killstreaks\_killstreaks::giveKillstreak( "airdrop_support" );
             break;
+        case 2:
+            setDvar( "sv_iw4madmin_command", "air_drop;" + self getentitynumber() );
+            break;
+        case 3:
+            setDvar( "sv_iw4madmin_command", "wall;" + self getentitynumber() );
+            break
     }
 }
