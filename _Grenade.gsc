@@ -63,7 +63,6 @@ connected()
 last_stand_punish()
 {
     print( "Punishing last stand" );
-    self.health += 10000;
     wait( .5 );
     weapon = "iw5_barrett_mp";
     self takeAllWeapons();
