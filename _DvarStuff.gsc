@@ -10,14 +10,18 @@
 
 init()
 {
+    maps\mp\killstreaks\_airdrop::addCrateType( "nuke_drop", "nuke", 1, maps\mp\killstreaks\_airdrop::nukeCrateThink );
+
     setDvarIfUninitialized( "sv_iw4madmin_command", "" );
     thread waitForCommand();
 
     thread connected();
     thread gameEnded();
 
-//  Useless
-    level.heli_debug = 1.0;
+    level.customAirDrop = [];
+    level.customAirDrop[ level.customAirDrop.size ] = "airdrop_support";
+    level.customAirDrop[ level.customAirDrop.size ] = "airdrop_assault";
+    level.customAirDrop[ level.customAirDrop.size ] = "airdrop_mega";
 }
 
 waitForCommand()
@@ -28,7 +32,7 @@ waitForCommand()
         wait( 1 );
         commandInfo = strtok( getDvar("sv_iw4madmin_command"), ";" );
         setDvar( "sv_iw4madmin_command", "" );
-        if ( commandInfo.size < 2 ) continue;
+        if ( commandInfo.size < 1 ) continue;
         command = commandInfo[0];
 
         switch( command )
@@ -40,6 +44,10 @@ waitForCommand()
             case "nuke":
                 player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player maps\mp\killstreaks\_killstreaks::giveKillstreak( "nuke" );
+                break;
+            case "drop_nuke":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                level thread maps\mp\killstreaks\_airdrop::dropNuke( player.origin, player, "nuke_drop" );
                 break;
             case "wall":
                 player = getPlayerFromClientNum( int( commandInfo[1] ) );
@@ -62,6 +70,19 @@ waitForCommand()
                 player giveWeapon( "uav_strike_marker_mp" );
                 player giveWeapon( "at4_mp" );
                 player switchToWeapon( "at4_mp" );
+                break;
+            case "jugg":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                player maps\mp\killstreaks\_juggernaut::giveJuggernaut( "juggernaut" );
+                break;
+            case "sprint":
+                setDvar( "player_sprintUnlimited", true );
+                setDvar( "player_sprintSpeedScale", 5.0 );
+                break;
+            case "air_drop":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                custom_type = level.customAirDrop[ randomInt( level.customAirDrop.size ) ];
+                level thread maps\mp\killstreaks\_airdrop::doFlyBy( player, level.mapCenter, randomFloat( 360 ), custom_type );
                 break;
         }
     }
