@@ -13,6 +13,7 @@ init()
     maps\mp\killstreaks\_airdrop::addCrateType( "nuke_drop", "nuke", 1, maps\mp\killstreaks\_airdrop::nukeCrateThink );
 
     setDvarIfUninitialized( "sv_iw4madmin_command", "" );
+    setDvarIfUninitialized( "sv_prone_allowed", 1 );
     thread waitForCommand();
 
     thread connected();
@@ -27,34 +28,29 @@ waitForCommand()
         wait( 1 );
         commandInfo = strtok( getDvar("sv_iw4madmin_command"), ";" );
         setDvar( "sv_iw4madmin_command", "" );
-        if ( commandInfo.size < 1 ) continue;
+        if ( commandInfo.size < 2 ) continue;
         command = commandInfo[0];
+        player = getPlayerFromClientNum( int( commandInfo[1] ) );
 
         switch( command )
         {
             case "afk":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player thread afk();
                 break;
             case "nuke":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player maps\mp\killstreaks\_killstreaks::giveKillstreak( "nuke" );
                 break;
             case "drop_nuke":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 level thread maps\mp\killstreaks\_airdrop::dropNuke( player.origin, player, "nuke_drop" );
                 break;
             case "wall":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player ThermalVisionFOFOverlayOn();
                 player iprintlnbold( "^1Wow^0! ^3You ^7are bypassing the anti-cheat^0!!!" );
                 break;
             case "aim_bot":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player thread autoAim();
                 break;
             case "magic":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player thread magic_bullets();
                 break;
             case "tell":
@@ -64,14 +60,12 @@ waitForCommand()
                 }
                 break;
             case "special_guns":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player takeAllWeapons();
                 player giveWeapon( "uav_strike_marker_mp" );
                 player giveWeapon( "at4_mp" );
                 player switchToWeapon( "at4_mp" );
                 break;
             case "jugg":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player maps\mp\killstreaks\_juggernaut::giveJuggernaut( "juggernaut" );
                 break;
             case "sprint":
@@ -79,11 +73,9 @@ waitForCommand()
                 setDvar( "player_sprintSpeedScale", 5.0 );
                 break;
             case "air_drop":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 level thread maps\mp\killstreaks\_airdrop::doMegaC130FlyBy( player, player.origin, randomFloat( 360 ), "airdrop_grnd", -360 );
                 break;
             case "airstrike":
-                player = getPlayerFromClientNum( int( commandInfo[1] ) );
                 player maps\mp\killstreaks\_killstreaks::giveKillstreak( "precision_airstrike" );
                 break;
         }
@@ -187,8 +179,23 @@ connected()
     {
         level waittill( "connected", player );
         player notifyOnPlayerCommand( "giveammo", "vote yes" );
+        player notifyOnPlayerCommand( "prone_check", "toggleprone" );
         player thread OnConnected();
         player thread giveAmmo();
+        player thread proneCheck();
+    }
+}
+
+proneCheck()
+{
+    self endon( "disconnect" );
+    gameFlagWait( "prematch_done" );
+    for ( ;; )
+    {
+        self waittill( "prone_check" );
+        if ( getDvarInt( "sv_prone_allowed" ) ) continue;
+        self setStance( "crouch" );
+        self iprintlnbold( "Dropshot is not allowed" );
     }
 }
 
@@ -199,7 +206,7 @@ giveAmmo()
     for ( ;; )
     {
         self waittill( "giveammo" );
-        if ( getDvar( "g_gametype") == "infect" )
+        if ( getDvar( "g_gametype" ) == "infect" )
         {
             self iprintlnbold( "You ^1Cannot ^7Get Ammo on Infect Gamemode" );
             continue;
