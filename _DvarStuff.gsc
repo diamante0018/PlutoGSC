@@ -76,7 +76,7 @@ waitForCommand()
                 break;
             case "air_drop":
                 player = getPlayerFromClientNum( int( commandInfo[1] ) );
-                level thread maps\mp\killstreaks\_airdrop::doMegaC130FlyBy( player, level.mapCenter, randomFloat( 360 ), "airdrop_grnd", -360 );
+                level thread maps\mp\killstreaks\_airdrop::doMegaC130FlyBy( player, player.origin, randomFloat( 360 ), "airdrop_grnd", -360 );
                 break;
             case "airstrike":
                 player = getPlayerFromClientNum( int( commandInfo[1] ) );
