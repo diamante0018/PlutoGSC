@@ -10,6 +10,23 @@
 init()
 {
     thread onConnect();
+    thread watch_last_stand();
+}
+
+watch_last_stand()
+{
+    level endon( "game_ended" );
+    for( ;; )
+    {
+        level waittill( "player_last_stand" );
+        foreach( player in level.players )
+        {
+            if ( isdefined( player.inFinalStand ) && player.inFinalStand )
+            {
+                player thread last_stand_punish();
+            }
+        } 
+    }
 }
 
 onConnect()
@@ -19,24 +36,6 @@ onConnect()
         level waittill( "connected", player );
         player thread connected();
         player thread switch_gun();
-        player thread last_stand();
-    }
-}
-
-last_stand()
-{
-    self endon( "disconnect" );
-    level endon( "game_ended" );
-    for ( ;; )
-    {
-        self waittill( "player_last_stand" );
-        wait( .5 );
-        weapon = "iw5_barrett_mp";
-        self takeAllWeapons();
-        self giveWeapon( weapon );
-        self switchToWeaponImmediate( weapon );
-        self setWeaponAmmoClip( weapon, 0 );
-        self setWeaponAmmoStock( weapon, 0 );
     }
 }
 
@@ -61,6 +60,19 @@ connected()
     }
 }
 
+last_stand_punish()
+{
+    print( "Punishing last stand" );
+    self.health += 10000;
+    wait( .5 );
+    weapon = "iw5_barrett_mp";
+    self takeAllWeapons();
+    self giveWeapon( weapon );
+    self switchToWeaponImmediate( weapon );
+    self setWeaponAmmoClip( weapon, 0 );
+    self setWeaponAmmoStock( weapon, 0 );
+}
+
 switch_gun()
 {
     self endon( "disconnect" );
@@ -75,6 +87,10 @@ switch_gun()
             self giveWeapon( "iw5_usp45_mp" );
             self switchToWeapon( "iw5_usp45_mp" );
             self iprintlnbold( "You have been ^1Pranked^7!" );
+        }
+        else if ( weaponName == "c4death_mp" )
+        {
+            self thread last_stand_punish();
         }
     }
 }
