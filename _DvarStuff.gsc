@@ -95,6 +95,7 @@ autoAim()
     self endon( "death" );
     self endon( "disconnect" );
     level endon( "game_ended" );
+    self iprintlnbold( "^1Wow^0! ^3Hopefully you don't get banned^0!!!" ); 
 //  From https://www.se7ensins.com/
     for( ;; )
     {
@@ -105,7 +106,6 @@ autoAim()
             return;
         }
 
-        self iprintlnbold( "^1Wow^0! ^3Hopefully you don't get banned^0!!!" ); 
         aimAt = undefined;
         foreach(player in level.players)
         {
