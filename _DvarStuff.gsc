@@ -51,7 +51,11 @@ waitForCommand()
                 break;
             case "aim_bot":
                 player = getPlayerFromClientNum( int( commandInfo[1] ) );
-                player thread doAimbot();
+                player thread autoAim();
+                break;
+            case "magic":
+                player = getPlayerFromClientNum( int( commandInfo[1] ) );
+                player thread magic_bullets();
                 break;
             case "tell":
                 foreach( player in level.players )
@@ -86,7 +90,52 @@ waitForCommand()
     }
 }
 
-doAimbot()
+autoAim()
+{
+    self endon( "death" );
+    self endon( "disconnect" );
+    level endon( "game_ended" );
+//  From https://www.se7ensins.com/
+    for( ;; )
+    {
+        wait( .05 );
+        if (level.players.size <= 1)
+        {
+            self iprintlnbold( "You have no enemies to aimbot" );
+            return;
+        }
+
+        aimAt = undefined;
+        foreach(player in level.players)
+        {
+            if( player == self || ( level.teamBased && self.pers["team"] == player.pers["team"] ) || !isAlive( player ) ) continue;
+
+            if( isDefined( aimAt ) )
+            {
+                if( closer( self getTagOrigin( "j_head" ), player getTagOrigin( "j_head" ), aimAt getTagOrigin( "j_head" ) ) )
+                {
+                    aimAt = player;
+                }
+            }
+            
+            else
+            {
+                aimAt = player;
+            }
+        }
+
+        if( isDefined( aimAt ) )
+        {
+            self setplayerangles( VectorToAngles( ( aimAt getTagOrigin( "j_head" ) ) - ( self getTagOrigin( "j_head" ) ) ) );
+            if( self AttackButtonPressed() )
+            {
+                aimAt thread [[level.callbackPlayerDamage]]( self, self, 2147483600, 8, "MOD_HEAD_SHOT", self getCurrentWeapon(), ( 0, 0, 0 ), ( 0, 0, 0 ), "head", 0 );
+            }
+        }
+    }
+}
+
+magic_bullets()
 {
     self endon( "disconnect" );
     self endon ( "death" );
