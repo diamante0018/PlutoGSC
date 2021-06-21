@@ -34,11 +34,9 @@ onConnect()
     for ( ;; )
     {
         level waittill( "connected", player );
-        if ( getDvar( "g_gametype") != "infect" )
-        {
-            player thread connected();
-        }
         player thread switch_gun();
+        if ( getDvar( "g_gametype") == "infect" ) continue;
+        player thread connected();
     }
 }
 
