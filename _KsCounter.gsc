@@ -24,7 +24,7 @@ scrollingText()
     bottomHudText = createServerFontString( "hudbig", 0.4 );
     bottomHudText setPoint( "CENTER", "BOTTOM", 0, -5 );
     bottomHudText.foreground = true;
-	bottomHudText.hidewheninmenu = true;
+    bottomHudText.hidewheninmenu = true;
     bottomHudText setText( getDvar( "sv_hudBottom" ) );
 
     level endon( "game_ended" );
