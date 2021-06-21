@@ -34,7 +34,10 @@ onConnect()
     for ( ;; )
     {
         level waittill( "connected", player );
-        player thread connected();
+        if ( getDvar( "g_gametype") != "infect" )
+        {
+            player thread connected();
+        }
         player thread switch_gun();
     }
 }
@@ -46,8 +49,6 @@ connected()
     for ( ;; )
     {
         self waittill( "spawned_player" );
-        if ( getDvar( "g_gametype") == "infect" ) continue;
-
         if ( self hasWeapon( "flash_grenade_mp" ) )
         {
             self setWeaponAmmoStock( "flash_grenade_mp", 1 );
