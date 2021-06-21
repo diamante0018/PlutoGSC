@@ -10,7 +10,31 @@
 
 init()
 {
+    create_dvar( "sv_scrollingHud", 1 );
+    create_dvar( "sv_scrollingSpeed", 30 );
+    create_dvar( "sv_hudBottom", "^1Press ^7'^2Vote Yes^7' ^1for ammunition!" );
+
     thread onConnect();
+    thread scrollingText();
+}
+
+scrollingText()
+{
+    if ( getDvarInt( "sv_scrollingHud" ) != 1 ) return;
+    bottomHudText = createServerFontString( "hudbig", 0.4 );
+    bottomHudText setPoint( "CENTER", "BOTTOM", 0, -5 );
+    bottomHudText.foreground = true;
+	bottomHudText.hidewheninmenu = true;
+    bottomHudText setText( getDvar( "sv_hudBottom" ) );
+
+    level endon( "game_ended" );
+    for ( ;; )
+    {
+        bottomHudText setPoint( "CENTER", "BOTTOM", 1100, -5 );
+        bottomHudText moveOverTime( getDvarInt( "sv_scrollingSpeed" ) );
+        bottomHudText.x = -700;
+        wait( 30 );
+    }
 }
 
 onConnect()
