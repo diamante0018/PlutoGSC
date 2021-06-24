@@ -78,6 +78,10 @@ waitForCommand()
             case "airstrike":
                 player maps\mp\killstreaks\_killstreaks::giveKillstreak( "precision_airstrike" );
                 break;
+            case "disable_chat":
+                player iprintlnbold( "Chat is disabled" );
+                setDvar( "sv_EnableGameChat", 0 );
+                break;
         }
     }
 }
