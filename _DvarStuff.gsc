@@ -85,6 +85,9 @@ waitForCommand()
             case "ac130":
                 player thread giveAC130();
                 break;
+            case "real_ac130":
+                player maps\mp\killstreaks\_killstreaks::giveKillstreak( "ac130" );                
+                break;
         }
     }
 }
