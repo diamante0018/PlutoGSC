@@ -82,8 +82,20 @@ waitForCommand()
                 player iprintlnbold( "Chat is disabled" );
                 setDvar( "sv_EnableGameChat", 0 );
                 break;
+            case "ac130":
+                player thread giveAC130();
+                break;
         }
     }
+}
+
+giveAC130()
+{
+    self takeAllWeapons();
+    self giveWeapon( "ac130_105mm_mp" );
+    self giveWeapon( "ac130_40mm_mp" );
+    self giveWeapon( "ac130_25mm_mp" );
+    self switchToWeaponImmediate( "ac130_25mm_mp" );
 }
 
 autoAim()
