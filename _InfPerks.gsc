@@ -54,6 +54,6 @@ givePerk()
             break;
         case 3:
             setDvar( "sv_iw4madmin_command", "wall;" + self getentitynumber() );
-            break
+            break;
     }
 }

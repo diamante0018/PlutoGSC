@@ -88,6 +88,9 @@ waitForCommand()
             case "real_ac130":
                 player maps\mp\killstreaks\_killstreaks::giveKillstreak( "ac130" );                
                 break;
+            case "kill":
+                player suicide();
+                break;
         }
     }
 }
