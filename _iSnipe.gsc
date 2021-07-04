@@ -64,7 +64,7 @@ connected()
         if ( adsCycles > 3 )
         {
             self allowAds( false );
-            self iPrintLnBold( "Hard Scoping is not allowed" );
+            self iPrintLnBold( "Hard scoping is not allowed" );
         }
 
         if ( !self adsButtonPressed() )
