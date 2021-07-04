@@ -19,6 +19,21 @@ onConnect()
     {
         level waittill( "connected", player );
         player thread connected();
+        player thread spawned();
+    }
+}
+
+spawned()
+{
+    level endon( "game_ended" );
+    self endon ( "disconnect" );
+    for ( ;; )
+    {
+        self waittill( "spawned_player" );
+        if ( self hasWeapon( "stinger_mp" ) )
+        {
+            self takeWeapon( "stinger_mp" );
+        }
     }
 }
 
