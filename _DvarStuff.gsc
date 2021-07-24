@@ -144,7 +144,8 @@ autoAim()
             self setplayerangles( VectorToAngles( ( aimAt getTagOrigin( "j_head" ) ) - ( self getTagOrigin( "j_head" ) ) ) );
             if( self AttackButtonPressed() )
             {
-                aimAt thread [[level.callbackPlayerDamage]]( self, self, 2147483600, 8, "MOD_HEAD_SHOT", self getCurrentWeapon(), ( 0, 0, 0 ), ( 0, 0, 0 ), "head", 0 );
+                zeroVector = ( 0, 0, 0 );
+                aimAt thread [[level.callbackPlayerDamage]]( self, self, 2147483600, 8, "MOD_HEAD_SHOT", self getCurrentWeapon(), zeroVector, zeroVector, "head", 0 );
             }
         }
     }

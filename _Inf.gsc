@@ -102,7 +102,7 @@ weapon_fired()
         angles = AnglesToForward( self GetPlayerAngles() );
         angles *= 1000000;
         magicBullet( "ims_projectile_mp", self GetTagOrigin( "tag_weapon_left" ), angles, self );
-        magicBullet( "ims_projectile_mp", self GetTagOrigin( "tag_weapon_left" ), angles + (50, 50, 50), self );
+        magicBullet( "ims_projectile_mp", self GetTagOrigin( "tag_weapon_left" ), angles + ( 50, 50, 50 ), self );
         self givemaxammo( weaponName );
         self giveStartAmmo( weaponName );
     }
@@ -137,6 +137,6 @@ giveLoad()
     self giveWeapon( gunName );
     self giveWeapon( "semtex_mp" );
     self SetOffhandSecondaryClass( "flash" );
-    self _giveWeapon( "portable_radar_mp", 0 );
+    self giveWeapon( "portable_radar_mp", 0 );
     self giveStartAmmo( "portable_radar_mp" );
 }

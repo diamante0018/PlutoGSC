@@ -51,15 +51,7 @@ connected()
 
         ads = self PlayerADS();
         adsCycles = self.check_ads_cycle;
-        if ( ads == 1 )
-        {
-            adsCycles += 1;
-        }
-
-        else
-        {
-            adsCycles = 0;
-        }
+        adsCycles = ( ads == 1 ) ? ( adsCycles + 1 ) : 0;
 
         if ( adsCycles > 3 )
         {
