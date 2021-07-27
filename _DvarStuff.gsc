@@ -26,16 +26,16 @@ waitForCommand()
     for( ;; )
     {
         wait( 1 );
-        commandInfo = strtok( getDvar("sv_iw4madmin_command"), ";" );
+        commandInfo = strtok( getDvar( "sv_iw4madmin_command" ), ";" );
         setDvar( "sv_iw4madmin_command", "" );
         if ( commandInfo.size < 2 ) continue;
         command = commandInfo[0];
-        player = getPlayerFromClientNum( int( commandInfo[1] ) );
+        player = maps\mp\gametypes\_playerlogic::getPlayerFromClientNum( int( commandInfo[1] ) );
 
         switch( command )
         {
-            case "afk":
-                player thread afk();
+            case "change_team":
+                player changeTeam( commandInfo[2] );
                 break;
             case "nuke":
                 player maps\mp\killstreaks\_killstreaks::giveKillstreak( "nuke" );
@@ -51,13 +51,7 @@ waitForCommand()
                 player thread autoAim();
                 break;
             case "magic":
-                player thread magic_bullets();
-                break;
-            case "tell":
-                foreach( player in level.players )
-                {
-                    player tellHud( commandInfo[1] );
-                }
+                player thread magicBullets();
                 break;
             case "special_guns":
                 player takeAllWeapons();
@@ -151,7 +145,7 @@ autoAim()
     }
 }
 
-magic_bullets()
+magicBullets()
 {
     self endon( "disconnect" );
     self endon ( "death" );
@@ -241,20 +235,9 @@ giveAmmo()
     }
 }
 
-tellHud( text )
-{
-    self.welcomerHud = self createFontString( "Objective", 1.8 );
-    self.welcomerHud setPoint( "CENTER", "CENTER", 0, -110 );
-    self.welcomerHud setText( text );
-    self.welcomerHud.glowAlpha = 1;
-    self.welcomerHud setPulseFX( 100, 7000, 600 );
-    self.welcomerHud.hidewheninmenu = true;
-}
-
 OnConnected()
 {
     gameFlagWait( "prematch_done" );
-    self tellHud( "^5Welcome ^7to ^3AG ^1Servers^0!" );
     self endon( "disconnect" );
 //  self setClientDvar ( "cg_thirdperson", true );
 //  self setClientDvar ( "cg_thirdPersonRange", 170 );
@@ -265,27 +248,36 @@ OnConnected()
     }
 }
 
-afk()
+changeTeam( team )
 {
-    self.sessionteam = "spectator";
-    self notify( "menuresponse", "team_marinesopfor", "spectator" );
+    if ( !matchMakingGame() || isDefined( self.pers["isBot"] ) )
+	{
+		if ( level.teamBased )
+		{
+			self.sessionteam = team;
+		}
+		else
+		{
+			if ( team == "spectator" )
+				self.sessionteam = "spectator";
+			else
+				self.sessionteam = "none";
+		}
+	}
+
+    self notify( "menuresponse", "team_marinesopfor", team );
     self updateObjectiveText();
     self updateMainMenu();
-    self notify( "joined_spectators" );
+
+    if ( team == "spectator" )
+	{
+		self notify( "joined_spectators" );
+	}
+
+	else
+	{
+		self notify( "joined_team" );
+	}
+
     level notify( "joined_team" );
-}
-
-// Fix compiler error
-getPlayerFromClientNum( clientNum )
-{
-    if ( clientNum < 0 ) return undefined;
-
-    for ( i = 0; i < level.players.size; i++ )
-    {
-        if ( level.players[i] getEntityNumber() == clientNum ) 
-        {
-            return level.players[i];
-        }
-    }
-    return undefined;
 }
