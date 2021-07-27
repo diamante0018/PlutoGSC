@@ -251,33 +251,33 @@ OnConnected()
 changeTeam( team )
 {
     if ( !matchMakingGame() || isDefined( self.pers["isBot"] ) )
-	{
-		if ( level.teamBased )
-		{
-			self.sessionteam = team;
-		}
-		else
-		{
-			if ( team == "spectator" )
-				self.sessionteam = "spectator";
-			else
-				self.sessionteam = "none";
-		}
-	}
+    {
+        if ( level.teamBased )
+        {
+            self.sessionteam = team;
+        }
+        else
+        {
+            if ( team == "spectator" )
+                self.sessionteam = "spectator";
+            else
+                self.sessionteam = "none";
+        }
+    }
 
     self notify( "menuresponse", "team_marinesopfor", team );
     self updateObjectiveText();
     self updateMainMenu();
 
     if ( team == "spectator" )
-	{
-		self notify( "joined_spectators" );
-	}
+    {
+        self notify( "joined_spectators" );
+    }
 
-	else
-	{
-		self notify( "joined_team" );
-	}
+    else
+    {
+        self notify( "joined_team" );
+    }
 
     level notify( "joined_team" );
 }
