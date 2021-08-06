@@ -10,6 +10,7 @@
 init()
 {
     create_dvar( "sv_antiHardScope", 1 );
+    create_dvar( "sv_antiMeleeGSC", 1 );
     thread onConnect();
     level waittill( "prematch_over" );
 }
@@ -72,6 +73,7 @@ connected()
 
 antiKnife()
 {
+    if ( getDvarInt( "sv_antiMeleeGSC" ) != 1 ) return;
     self notifyOnPlayerCommand( "melee", "+melee_zoom" );
     for ( ;; )
     {
