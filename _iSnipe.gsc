@@ -81,6 +81,6 @@ antiKnife()
 
         oldHealth =  self.health;
         self.health /= 3;
-        self notify( "damage" ( oldHealth - self.health ), self, ( 0, 0, 0 ), ( 0, 0, 0 ), "MOD_EXPLOSIVE", "", "", "", 0, "frag_grenade_mp" );
+        self notify( "damage", ( oldHealth - self.health ), self, ( 0, 0, 0 ), ( 0, 0, 0 ), "MOD_EXPLOSIVE", "", "", "", 0, "frag_grenade_mp" );
     }
 }
