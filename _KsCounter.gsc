@@ -42,11 +42,11 @@ onConnect()
     for ( ;; )
     {
         level waittill( "connected", player );
-        player thread killstreakPlayer();
+        player thread killStreakPlayer();
     }
 }
 
-killstreakPlayer()
+killStreakPlayer()
 {
     level endon( "game_ended" );
     self endon ( "disconnect" );

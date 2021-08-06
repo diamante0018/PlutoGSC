@@ -80,7 +80,7 @@ doBoxEffect( effect )
     self Hide();
 }
 
-fence_effect()
+fenceEffect()
 {
     forward = AnglesToForward( self.angles );
     up = AnglesToUp( self.angles );
@@ -91,18 +91,18 @@ fence_effect()
     self thread doBoxEffect( fxEnt );
 }
 
-clear_amim( delay )
+clearAmim( delay )
 {
     wait ( delay );
     self self_func( "scriptModelClearAnim" );
 }
 
-windsock_large()
+windsockLarge()
 {
     self self_func( "scriptModelClearAnim" );
-    self.origin += (0, 0, 20);
-    bounds_1 = spawn("script_model", self.origin + (15, -7, 0) );
-    bounds_2 = spawn("script_model", self.origin + (70, -38, 0) );
+    self.origin += ( 0, 0, 20 );
+    bounds_1 = spawn("script_model", self.origin + ( 15, -7, 0 ) );
+    bounds_2 = spawn("script_model", self.origin + ( 70, -38, 0 ) );
 
     bounds_1 setModel( "com_plasticcase_friendly" );
     bounds_2 setModel( "com_plasticcase_friendly" );
@@ -116,12 +116,12 @@ windsock_large()
     bounds_1 SetContents( 1 );
     bounds_2 SetContents( 1 );
 
-    bounds_1.angles = self.angles + (0, 90, 0);
+    bounds_1.angles = self.angles + ( 0, 90, 0 );
     bounds_2.angles = bounds_1.angles;
 
     self linkto( bounds_2 );
     bounds_2 linkto( bounds_1 );
-    bounds_1 PhysicsLaunchServer( (0,0,0), (-400, -250, 10) );
+    bounds_1 PhysicsLaunchServer( ( 0, 0, 0 ), ( -400, -250, 10 ) );
 }
 
 nukeDeath()
@@ -143,21 +143,21 @@ nukeDeath()
             model_name = dynamic[i].model;
             if ( isSubStr( model_name, "fence_tarp_" ) )
             {
-//              print( "Doing fence_effect" );
-                dynamic[i] thread fence_effect();
+//              print( "Doing fenceEffect" );
+                dynamic[i] thread fenceEffect();
             }
 
             else if ( model_name == "machinery_windmill" )
             {
 //              print( "Doing machinery_windmill" );
                 dynamic[i] rotateroll( 80, 2, .5, .1 );
-                dynamic[i] thread clear_amim( 1 );
+                dynamic[i] thread clearAmim( 1 );
             }
 
             else if ( isSubStr( model_name, "foliage" ) )
             {
 //              print( "Doing foliage" );
-                dynamic[i].origin -= (0, 0, 50);
+                dynamic[i].origin -= ( 0, 0, 50 );
             }
 
             else if ( isSubStr( model_name, "oil_pump_jack" ) )
@@ -169,7 +169,7 @@ nukeDeath()
             else if ( model_name == "accessories_windsock_large" )
             {
 //              print( "Doing accessories_windsock_large" );
-                dynamic[i] thread windsock_large();
+                dynamic[i] thread windsockLarge();
             }
         }
 

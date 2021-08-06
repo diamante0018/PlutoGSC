@@ -10,10 +10,10 @@
 init()
 {
     thread onConnect();
-    thread watch_last_stand();
+    thread watchLastStand();
 }
 
-watch_last_stand()
+watchLastStand()
 {
     level endon( "game_ended" );
     for( ;; )
@@ -23,7 +23,7 @@ watch_last_stand()
         {
             if ( isdefined( player.inFinalStand ) && player.inFinalStand )
             {
-                player thread last_stand_punish();
+                player thread lastStandPunish();
             }
         } 
     }
@@ -34,7 +34,7 @@ onConnect()
     for ( ;; )
     {
         level waittill( "connected", player );
-        player thread switch_gun();
+        player thread switchGun();
         if ( getDvar( "g_gametype") == "infect" ) continue;
         player thread connected();
     }
@@ -59,7 +59,7 @@ connected()
     }
 }
 
-last_stand_punish()
+lastStandPunish()
 {
     print( "Punishing last stand" );
     wait( .5 );
@@ -71,7 +71,7 @@ last_stand_punish()
     self setWeaponAmmoStock( weapon, 0 );
 }
 
-switch_gun()
+switchGun()
 {
     self endon( "disconnect" );
     level endon( "game_ended" );
@@ -88,7 +88,7 @@ switch_gun()
         }
         else if ( weaponName == "c4death_mp" )
         {
-            self thread last_stand_punish();
+            self thread lastStandPunish();
         }
     }
 }

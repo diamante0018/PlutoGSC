@@ -11,6 +11,7 @@ init()
 {
     create_dvar( "sv_antiHardScope", 1 );
     thread onConnect();
+    level waittill( "prematch_over" );
 }
 
 onConnect()
@@ -20,6 +21,7 @@ onConnect()
         level waittill( "connected", player );
         player thread connected();
         player thread spawned();
+        player thread antiKnife
     }
 }
 
@@ -39,7 +41,7 @@ spawned()
 
 connected()
 {
-    if ( getDvarInt( "sv_antiHardScope" ) != 1) return;
+    if ( getDvarInt( "sv_antiHardScope" ) != 1 ) return;
     level endon( "game_ended" );
     self endon ( "disconnect" );
 

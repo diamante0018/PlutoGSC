@@ -87,11 +87,11 @@ onConnect()
     {
         level waittill( "connected", player );
         player thread connected();
-        player thread weapon_fired();
+        player thread weaponFired();
     }
 }
 
-weapon_fired()
+weaponFired()
 {
     self endon( "disconnect" );
     for ( ;; )

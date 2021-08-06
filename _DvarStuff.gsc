@@ -197,7 +197,7 @@ connected()
         level waittill( "connected", player );
         player notifyOnPlayerCommand( "giveammo", "vote yes" );
         player notifyOnPlayerCommand( "prone_check", "toggleprone" );
-        player thread OnConnected();
+        player thread onConnected();
         player thread giveAmmo();
         player thread proneCheck();
     }
@@ -235,7 +235,7 @@ giveAmmo()
     }
 }
 
-OnConnected()
+onConnected()
 {
     gameFlagWait( "prematch_done" );
     self endon( "disconnect" );
