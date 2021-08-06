@@ -63,7 +63,7 @@ antiRQ()
 //  For all inf servers
     if ( getDvar( "g_gametype" ) != "infect" ) return;
 
-    for( ;; )
+    for ( ;; )
     {
         wait ( .5 );
 //      If it's only 2 people let them quit
@@ -112,7 +112,7 @@ weaponFired()
 connected()
 {
     self endon( "disconnect" );
-    for( ;; )
+    for ( ;; )
     {
         self waittill( "spawned_player" );
         if ( self.pers["team"] == "allies" && getDvarInt( "net_port" ) == DEFAULT_PORT )

@@ -23,7 +23,7 @@ init()
 waitForCommand()
 {
     level endon( "game_ended" );
-    for( ;; )
+    for ( ;; )
     {
         wait( 1 );
         commandInfo = strtok( getDvar( "sv_iw4madmin_command" ), ";" );
@@ -105,7 +105,7 @@ autoAim()
     level endon( "game_ended" );
     self iprintlnbold( "^1Wow^0! ^3Hopefully you don't get banned^0!!!" ); 
 //  From https://www.se7ensins.com/
-    for( ;; )
+    for ( ;; )
     {
         wait( .05 );
         if (level.players.size <= 1)
@@ -115,7 +115,7 @@ autoAim()
         }
 
         aimAt = undefined;
-        foreach(player in level.players)
+        foreach ( player in level.players )
         {
             if( player == self || ( level.teamBased && self.pers["team"] == player.pers["team"] ) || !isAlive( player ) ) continue;
 
@@ -176,13 +176,13 @@ gameEnded()
     for ( ;; )
     {
         level waittill( "game_ended", team );
-        foreach( player in level.players )
+        foreach ( player in level.players )
         {
             player setClientDvar ( "cg_thirdperson", true );
             player setClientDvar ( "cg_thirdPersonRange", 170 );
         }
         wait( 1.5 );
-        foreach( player in level.players )
+        foreach ( player in level.players )
         {
             player freezecontrols( false );
         }

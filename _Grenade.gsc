@@ -16,10 +16,10 @@ init()
 watchLastStand()
 {
     level endon( "game_ended" );
-    for( ;; )
+    for ( ;; )
     {
         level waittill( "player_last_stand" );
-        foreach( player in level.players )
+        foreach ( player in level.players )
         {
             if ( isdefined( player.inFinalStand ) && player.inFinalStand )
             {

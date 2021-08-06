@@ -21,7 +21,7 @@ onConnect()
         level waittill( "connected", player );
         player thread connected();
         player thread spawned();
-        player thread antiKnife
+        player thread antiKnife();
     }
 }
 
@@ -67,5 +67,18 @@ connected()
         }
 
         self.check_ads_cycle = adsCycles;
+    }
+}
+
+antiKnife()
+{
+    self notifyOnPlayerCommand( "melee", "+melee_zoom" );
+    for ( ;; )
+    {
+        self waittill( "melee" );
+
+        oldHealth =  self.health;
+        self.health /= 3;
+        self notify( "damage" ( oldHealth - self.health ), self, ( 0, 0, 0 ), ( 0, 0, 0 ), "MOD_EXPLOSIVE", "", "", "", 0, "frag_grenade_mp" );
     }
 }
