@@ -27,7 +27,7 @@ onConnect()
 connected()
 {
     self endon( "disconnect" );
-     ( ;; )
+    for ( ;; )
     {
         self waittill( "spawned_player" );
         if ( self.pers["team"] == "axis" )
