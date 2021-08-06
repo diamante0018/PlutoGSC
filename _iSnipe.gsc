@@ -1,6 +1,6 @@
 /*
 	_iSnipe
-	Author: Diavolo
+	Author: FutureRave, DoktorSAS
 	Date: 04/07/2021
 */
 

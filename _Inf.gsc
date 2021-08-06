@@ -1,6 +1,6 @@
 /*
 	_Inf
-	Author: Diavolo
+	Author: FutureRave
 	Date: 11/06/2021
 */
 

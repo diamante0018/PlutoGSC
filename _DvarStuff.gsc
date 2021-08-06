@@ -1,6 +1,6 @@
 /*
 	_DvarStuff
-	Author: Diavolo
+	Author: FutureRave
 	Date: 10/06/2021
 */
 

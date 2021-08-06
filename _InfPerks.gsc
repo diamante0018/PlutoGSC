@@ -1,6 +1,6 @@
 /*
 	_InfPerks
-	Author: Diavolo
+	Author: FutureRave
 	Date: 20/06/2021
 */
 
