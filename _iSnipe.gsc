@@ -78,7 +78,11 @@ antiKnife()
     for ( ;; )
     {
         self waittill( "melee" );
+
+//      print( "melee" );
+        result = Int( self.health / 3 );
+        self maps\mp\gametypes\_damagefeedback::updateDamageFeedback( "" );
         self suicide();
-        self iPrintLnBold( "Knifing is not allowed" );
+        self iPrintLnBold( "Stop" );
     }
 }
