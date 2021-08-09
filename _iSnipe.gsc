@@ -1,6 +1,6 @@
 /*
 	_iSnipe
-	Author: FutureRave, DoktorSAS
+	Author: FutureRave, DoktorSAS, Swifty
 	Date: 04/07/2021
 */
 
@@ -12,7 +12,11 @@ init()
     create_dvar( "sv_antiHardScope", 1 );
     create_dvar( "sv_antiMeleeGSC", 1 );
     thread onConnect();
+
     level waittill( "prematch_over" );
+    if ( getDvarInt( "sv_antiMeleeGSC" ) != 1 ) return;
+    level.prevCallbackPlayerDamage = level.callbackPlayerDamage;
+    level.callbackPlayerDamage = ::codeCallbackPlayerDamage;
 }
 
 onConnect()
@@ -22,7 +26,6 @@ onConnect()
         level waittill( "connected", player );
         player thread connected();
         player thread spawned();
-        player thread antiKnife();
     }
 }
 
@@ -71,18 +74,16 @@ connected()
     }
 }
 
-antiKnife()
+codeCallbackPlayerDamage( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, timeOffset )
 {
-    if ( getDvarInt( "sv_antiMeleeGSC" ) != 1 ) return;
-    self notifyOnPlayerCommand( "melee", "+melee_zoom" );
-    for ( ;; )
-    {
-        self waittill( "melee" );
+    self endon( "disconnect" );
 
-//      print( "melee" );
-        result = Int( self.health / 3 );
-        self maps\mp\gametypes\_damagefeedback::updateDamageFeedback( "" );
-        self suicide();
-        self iPrintLnBold( "Stop" );
+    if ( sMeansOfDeath == "MOD_MELEE" )
+    {
+        eAttacker maps\mp\gametypes\_damagefeedback::updateDamageFeedback( "" );
+        eAttacker iPrintLnBold( &"MP_CIVILIAN_AIR_TRAFFIC" );
+        return;
     }
+
+    [[level.prevCallbackPlayerDamage]]( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, sWeapon, vPoint, vDir, sHitLoc, timeOffset );
 }
