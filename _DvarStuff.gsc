@@ -14,6 +14,7 @@ init()
 
     setDvarIfUninitialized( "sv_iw4madmin_command", "" );
     setDvarIfUninitialized( "sv_prone_allowed", 1 );
+    setDvar( "g_inactivity", 300 );
     thread waitForCommand();
 
     thread connected();
